@@ -4,8 +4,10 @@ describe('Code duplication bad practice - multiple checks', () => {
   })
  
   it('checks all checkboxes from a specific fieldset', () => {
-    cy.get('#friend').check()
-    cy.get('#publication').check()
-    cy.get('#social-media').check()
+    cy.get('fieldset div input[type="checkbox"]').as('checkBoxes').check()
+    cy.get('@checkBoxes')
+      .each(checkbox => {
+        expect(checkbox[0].checked).to.equal(true)
+      })
   })
 })

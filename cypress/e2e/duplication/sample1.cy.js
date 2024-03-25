@@ -1,5 +1,5 @@
 describe('Code duplication bad practice - repetitive steps', () => {
-  it('searches by typing and hitting enter', () => {
+  beforeEach(() => {
     cy.intercept(
       'GET',
       '**/search**'
@@ -7,12 +7,10 @@ describe('Code duplication bad practice - repetitive steps', () => {
 
     cy.visit('https://hackernews-seven.vercel.app')
     cy.wait('@getStories')
+  })
 
-    cy.get('input[type="text"]')
-      .should('be.visible')
-      .and('have.value', 'redux')
-      .clear()
-      .type('frontend testing{enter}')
+  it('searches by typing and hitting enter', () => {
+    cy.search('frontend testing')
 
     cy.wait('@getStories')
 
@@ -21,17 +19,9 @@ describe('Code duplication bad practice - repetitive steps', () => {
   })
 
   it('searches by typing and pressing the search button', () => {
-    cy.intercept(
-      'GET',
-      '**/search**'
-    ).as('getStories')
-
-    cy.visit('https://hackernews-seven.vercel.app')
-    cy.wait('@getStories')
 
     cy.get('input[type="text"]')
       .should('be.visible')
-      .and('have.value', 'redux')
       .clear()
       .type('frontend testing')
 
